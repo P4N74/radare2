@@ -74,6 +74,7 @@ extern RCryptoPlugin r_crypto_plugin_base91;
 extern RCryptoPlugin r_crypto_plugin_aes_cbc;
 extern RCryptoPlugin r_crypto_plugin_punycode;
 extern RCryptoPlugin r_crypto_plugin_rc6;
+extern RCryptoPlugin r_crypto_plugin_des;
 
 #ifdef __cplusplus
 }

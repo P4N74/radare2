@@ -162,7 +162,8 @@ R_API ut64 r_des_pc1 (ut64 k)
 	int i;
 	ut64 ret_key = 0LL;
 	for (i=0; i < 56; i++) {
-		ret_key |= ((ut64)((k & ((ut64)0x1 << (PC_1[i]-1))) >> (PC_1[i]-1)) << i);
+//		ret_key |= ((ut64)((k & ((ut64)0x1 << (PC_1[i]-1))) >> (PC_1[i]-1)) << i);
+		ret_key = (ret_key << 1) | (k >> (64 - PC_1[i]) & 0x01);
 	}
 	return ret_key;
 }
@@ -172,7 +173,8 @@ R_API ut64 r_des_pc2 (ut64 k)
 	int i;
 	ut64 ret_key = 0LL;
 	for (i=0; i<48; i++)
-		ret_key |= ((ut64)((k & ((ut64)0x1 << (PC_2[i]-1))) >> (PC_2[i]-1)) << i);
+//		ret_key |= ((ut64)((k & ((ut64)0x1 << (PC_2[i]-1))) >> (PC_2[i]-1)) << i);
+		ret_key = (ret_key << 1) | (k >> (56 - PC_2[i]) & 0x01);
 	return ret_key;
 }
 
@@ -194,7 +196,8 @@ R_API ut64 r_des_ip (ut64 state, int inv) {
 	const ut32 *p = (inv ? INV_IP : IP);
 
 	while(bit < 64) {
-		ret |= (state & (1ul << (p[bit] - 1)) ? 1ul << bit : 0);
+//		ret |= (state & (1ul << (p[bit] - 1)) ? 1ul << bit : 0);
+		ret = (ret << 1) | ( state >> (64 - p[bit]) & 0x01);
 		bit += 1;
 	}
 
@@ -206,7 +209,8 @@ R_API ut64 r_des_expansion (ut32 half) {
 	ut32 bit = 0;
 
 	while(bit < 48) {
-		ret |= (half & (1ul << (E[bit] - 1)) ? 1ul << bit : 0);
+//		ret |= (half & (1ul << (E[bit] - 1)) ? 1ul << bit : 0);
+		ret = (ret << 1) | ( half >> (32 - E[bit]) & 0x01);
 		bit += 1;
 	}
 
@@ -218,7 +222,8 @@ R_API ut32 r_des_p (ut32 half) {
 	ut32 bit = 0;
 
 	while(bit < 32) {
-		ret |= (half & (1ul << (P[bit] - 1)) ? 1ul << bit : 0);
+//		ret |= (half & (1ul << (P[bit] - 1)) ? 1ul << bit : 0);
+		ret = (ret << 1) | ( half >> (32 - P[bit]) & 0x01);
 		bit += 1;
 	}
 
